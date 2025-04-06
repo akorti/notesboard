@@ -11,6 +11,7 @@ import { Note } from './types/Note'
 import { FaPlus } from 'react-icons/fa'
 import { IoMdClose } from "react-icons/io"
 import ImportExportJson from "./components/ImportExportJson.tsx"
+import { setDynamicFavicon } from './utils/setDynamicFavicon'
 
 const App: React.FC = () => {
     const { boards, selectedBoard, setSelectedBoard, fetchBoards } = useBoardsStore()
@@ -22,6 +23,29 @@ const App: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('')
     const [isSearchLoading, setIsSearchLoading] = useState(false)
+
+
+    useEffect(() => {
+        if (selectedBoard) {
+            const board = boards.find((b) => b.id === selectedBoard)
+            if (board) {
+                const initial = board.name[0]?.toUpperCase() || 'N'
+                setDynamicFavicon(initial)
+            }
+        }
+    }, [selectedBoard, boards])
+
+    useEffect(() => {
+        if (selectedBoard !== null) {
+            const board = boards.find(b => b.id === selectedBoard)
+            if (board) {
+                const count = notes.filter(n => n.boardId === board.id).length
+                document.title = `${board.name} (${count} note${count !== 1 ? 's' : ''}) - NotesBoard`
+            }
+        } else {
+            document.title = 'NotesBoard'
+        }
+    }, [selectedBoard, boards, notes])
 
     useEffect(() => {
         fetchBoards()
