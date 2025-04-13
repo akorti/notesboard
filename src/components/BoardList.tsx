@@ -5,7 +5,6 @@ import { Board } from "../types/Board"
 
 const BoardSidebar: React.FC = () => {
     const { boards, selectedBoard, setSelectedBoard, removeBoard } = useBoardsStore()
-
     const handleDeleteBoard = async(board: Board) => {
         if (window.confirm(`Voulez-vous vraiment supprimer le board "${board.name}" ?`)) {
            await removeBoard(board.id)

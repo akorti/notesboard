@@ -1,0 +1,13 @@
+CREATE TRIGGER IF NOT EXISTS update_boards_updatedAt
+    BEFORE UPDATE ON boards
+    FOR EACH ROW
+BEGIN
+    SET NEW.updatedAt = CURRENT_TIMESTAMP;
+END;
+
+CREATE TRIGGER IF NOT EXISTS update_notes_updatedAt
+    BEFORE UPDATE ON notes
+    FOR EACH ROW
+BEGIN
+    SET NEW.updatedAt = CURRENT_TIMESTAMP;
+END;

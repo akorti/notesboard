@@ -10,7 +10,6 @@ const BoardSelector: React.FC = () => {
         if (newBoardName.trim()) {
             addBoard(newBoardName.trim())
             setNewBoardName('')
-
         }
     }
 

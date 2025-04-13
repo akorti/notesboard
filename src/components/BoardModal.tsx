@@ -30,7 +30,7 @@ const BoardModal: React.FC<BoardModalProps> = ({ isOpen, onClose, onSubmit }) =>
         >
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold">Add a Board</h2>
-                <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+                <button onClick={onClose} className="text-gray-500 cursor-pointer hover:text-gray-700">
                     <FaTimes size={18} />
                 </button>
             </div>
@@ -42,10 +42,10 @@ const BoardModal: React.FC<BoardModalProps> = ({ isOpen, onClose, onSubmit }) =>
                 className="w-full px-4 py-2 mb-4 border border-gray-300 rounded"
             />
             <div className="flex justify-end gap-2">
-                <button onClick={onClose} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded">
+                <button onClick={onClose} className="px-4 py-2 cursor-pointer bg-gray-300 hover:bg-gray-400 rounded">
                     Cancel
                 </button>
-                <button onClick={handleSubmit} className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded">
+                <button onClick={handleSubmit} className="px-4 cursor-pointer py-2 bg-green-600 hover:bg-green-700 text-white rounded">
                     Add
                 </button>
             </div>

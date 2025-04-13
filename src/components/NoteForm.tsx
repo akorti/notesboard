@@ -37,6 +37,7 @@ const colorOptions = [
     { name: 'Rose-Fuchsia', className: 'bg-gradient-to-r from-rose-200 to-fuchsia-200' },
     { name: 'Gris-Zinc', className: 'bg-gradient-to-r from-gray-200 to-zinc-200' },
 ]
+
 const NoteForm: React.FC<NoteFormProps> = ({ noteToEdit, onClose, boardId }) => {
     const { addNote, editNote } = useNotesStore()
     const [title, setTitle] = useState('')
@@ -70,8 +71,11 @@ const NoteForm: React.FC<NoteFormProps> = ({ noteToEdit, onClose, boardId }) => 
     }
 
     return (
-        <div className="flex flex-col gap-4 mb-4 max-w-4xl mx-auto text-black bg-gray-200 p-4 rounded shadow">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div className="w-full h-full p-4 bg-gray-100">
+            <form
+                onSubmit={handleSubmit}
+                className="flex flex-col h-full gap-4 text-black bg-white rounded shadow p-6"
+            >
                 <div className="flex flex-col md:flex-row gap-4">
                     <input
                         type="text"
@@ -90,45 +94,48 @@ const NoteForm: React.FC<NoteFormProps> = ({ noteToEdit, onClose, boardId }) => 
                     className="px-4 py-2 border bg-white border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
 
-                <h5>Background Color</h5>
-                <div className="flex gap-4">
-                    {colorOptions.map((option) => (
-                        <button
-                            key={option.name}
-                            type="button"
-                            onClick={() => setSelectedColor(option.className)}
-                            className={`w-12 h-12 rounded-lg border-2 ${option.className} ${selectedColor === option.className ? 'border-black' : 'border-transparent'}`}
-                        />
-                    ))}
+                <div>
+                    <h5 className="font-medium mb-2">Background Color</h5>
+                    <div className="flex flex-wrap gap-3">
+                        {colorOptions.map((option) => (
+                            <button
+                                key={option.name}
+                                type="button"
+                                onClick={() => setSelectedColor(option.className)}
+                                className={`w-10 h-10 rounded-lg border-2 ${option.className} ${selectedColor === option.className ? 'border-black' : 'border-transparent'}`}
+                            />
+                        ))}
+                    </div>
                 </div>
 
-                <ReactQuill
-                    value={content}
-                    onChange={setContent}
-                    modules={modules}
-                    formats={formats}
-                    placeholder="Note content (you can insert code blocks)"
-                    className="h-40"
-                />
+                <div className="flex-1 min-h-[200px] mb-3">
+                    <ReactQuill
+                        value={content}
+                        onChange={setContent}
+                        modules={modules}
+                        formats={formats}
+                        placeholder="Note content (you can insert code blocks)"
+                        className="h-full"
+                    />
+                </div>
 
-                <div className="flex justify-end gap-5 pt-12">
+                <div className="flex justify-end gap-4 mt-6 pt-6">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        className="px-4 py-2 bg-gray-400 cursor-pointer text-white rounded hover:bg-gray-500 transition focus:outline-none focus:ring-2 focus:ring-gray-400"
                     >
                         Cancel
                     </button>
                     <button
                         type="submit"
-                        className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="px-6 py-2 bg-blue-600 cursor-pointer text-white rounded hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
                         {noteToEdit ? 'Update note' : 'Add note'}
                     </button>
                 </div>
             </form>
         </div>
-
     )
 }
 

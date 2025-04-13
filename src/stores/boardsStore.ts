@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { API_BASE_URL, getUserToken } from '../config/apiConfig'
+import { API_BASE_URL, getAuthHeaders } from '../config/apiConfig'
 import { Board } from '../types/Board'
 
 interface BoardsState {
@@ -17,11 +17,9 @@ export const useBoardsStore = create<BoardsState>((set) => ({
 
     fetchBoards: async () => {
         try {
+            const headers = await getAuthHeaders()
             const response = await fetch(`${API_BASE_URL}/boards`, {
-                headers: {
-                    'x-user-token': getUserToken(),
-                    'x-app-key': import.meta.env.VITE_APP_SECRET_KEY
-                },
+                headers
             })
             if (!response.ok) throw new Error('Failed to fetch boards')
             const data: Board[] = await response.json()
@@ -36,13 +34,10 @@ export const useBoardsStore = create<BoardsState>((set) => ({
 
     addBoard: async (name: string) => {
         try {
+            const headers = await getAuthHeaders()
             const response = await fetch(`${API_BASE_URL}/boards`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-user-token': getUserToken(),
-                    'x-app-key': import.meta.env.VITE_APP_SECRET_KEY
-                },
+                headers,
                 body: JSON.stringify({ name }),
             })
             if (!response.ok) throw new Error('Failed to add board');
@@ -58,12 +53,10 @@ export const useBoardsStore = create<BoardsState>((set) => ({
 
     removeBoard: async (id: number) => {
         try {
+            const headers = await getAuthHeaders()
             const response = await fetch(`${API_BASE_URL}/boards/${id}`, {
                 method: 'DELETE',
-                headers: {
-                    'x-user-token': getUserToken(),
-                    'x-app-key': import.meta.env.VITE_APP_SECRET_KEY
-                },
+                headers
             })
             if (!response.ok) throw new Error('Failed to delete board')
             set((state) => ({

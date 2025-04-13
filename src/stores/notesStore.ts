@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { API_BASE_URL, getUserToken } from '../config/apiConfig'
+import { API_BASE_URL, getAuthHeaders } from '../config/apiConfig'
 import { Note } from '../types/Note'
 
 
@@ -15,24 +15,19 @@ export const useNotesStore = create<NotesState>((set) => ({
     notes: [],
 
     fetchNotes: async (boardId) => {
+        const headers = await getAuthHeaders()
         const response = await fetch(`${API_BASE_URL}/boards/${boardId}/notes`, {
-            headers: {
-                'x-user-token': getUserToken(),
-                'x-app-key': import.meta.env.VITE_APP_SECRET_KEY
-            },
+            headers
         })
         const data: Note[] = await response.json()
         set({ notes: data })
     },
 
     addNote: async (noteData) => {
+        const headers = await getAuthHeaders()
         const response = await fetch(`${API_BASE_URL}/boards/${noteData.boardId}/notes`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-user-token': getUserToken(),
-                'x-app-key': import.meta.env.VITE_APP_SECRET_KEY
-            },
+            headers,
             body: JSON.stringify(noteData),
         });
         const newNote = await response.json()
@@ -40,13 +35,10 @@ export const useNotesStore = create<NotesState>((set) => ({
     },
 
     editNote: async (id, updatedData) => {
+        const headers = await getAuthHeaders()
         await fetch(`${API_BASE_URL}/notes/${id}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-user-token': getUserToken(),
-                'x-app-key': import.meta.env.VITE_APP_SECRET_KEY
-            },
+            headers,
             body: JSON.stringify(updatedData),
         })
         set((state) => ({
@@ -57,12 +49,10 @@ export const useNotesStore = create<NotesState>((set) => ({
     },
 
     removeNote: async (id) => {
+        const headers = await getAuthHeaders()
         await fetch(`${API_BASE_URL}/notes/${id}`, {
             method: 'DELETE',
-            headers: {
-                'x-user-token': getUserToken(),
-                'x-app-key': import.meta.env.VITE_APP_SECRET_KEY
-            },
+            headers
         })
         set((state) => ({
             notes: state.notes.filter((note) => note.id !== id),

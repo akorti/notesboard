@@ -5,4 +5,6 @@ export interface Note {
     color: string
     category: string
     boardId: number
+    createdAt?: string
+    updatedAt?: string
 }
