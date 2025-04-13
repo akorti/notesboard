@@ -1,13 +1,13 @@
 CREATE TRIGGER IF NOT EXISTS update_boards_updatedAt
-    BEFORE UPDATE ON boards
+    AFTER UPDATE ON boards
     FOR EACH ROW
 BEGIN
-    SET NEW.updatedAt = CURRENT_TIMESTAMP;
+    UPDATE boards SET updatedAt = CURRENT_TIMESTAMP WHERE id = OLD.id;
 END;
 
 CREATE TRIGGER IF NOT EXISTS update_notes_updatedAt
-    BEFORE UPDATE ON notes
+    AFTER UPDATE ON notes
     FOR EACH ROW
 BEGIN
-    SET NEW.updatedAt = CURRENT_TIMESTAMP;
+    UPDATE notes SET updatedAt = CURRENT_TIMESTAMP WHERE id = OLD.id;
 END;
