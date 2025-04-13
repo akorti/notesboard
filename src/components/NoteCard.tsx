@@ -17,7 +17,6 @@ const formatDate = (dateStr: string) => {
 }
 
 const NoteCard: React.FC<NoteCardProps> = ({ note, onEdit, onDelete }) => {
-    // Appliquer Prism.highlightAll() à chaque mise à jour du contenu
     useEffect(() => {
         Prism.highlightAll()
     }, [note.content])

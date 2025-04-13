@@ -21,7 +21,7 @@ const NotesBoard: React.FC<NotesBoardProps> = ({ notes, onEdit, onDelete }) => {
             ))}
             {notes.length === 0 && (
                 <div className="col-span-full text-center text-gray-500">
-                    Aucune note trouvée.
+                    No note found.
                 </div>
             )}
         </div>

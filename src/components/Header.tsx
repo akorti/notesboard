@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useBoardsStore } from '../stores/boardsStore.ts'
 import BoardModal from './BoardModal'
-import { FaPlus, FaSearch } from "react-icons/fa"
+import { FaPlus, FaSearch, FaRegCopy } from 'react-icons/fa'
 import { APP_NAME } from '../config/appConfig.ts'
+import { getUserToken } from '../config/apiConfig'
 
 interface HeaderProps {
     searchQuery: string
@@ -12,10 +13,23 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ searchQuery, setSearchQuery }) => {
     const { addBoard } = useBoardsStore()
     const [isModalOpen, setIsModalOpen] = useState(false)
-
+    const [token, setToken] = useState<string | null>(null)
+    const [copied, setCopied] = useState(false)
     const handleAddBoard = async (boardName: string) => {
         await addBoard(boardName)
         setIsModalOpen(false)
+    }
+
+    useEffect(() => {
+        getUserToken().then(setToken)
+    }, [])
+
+    const handleCopyLink = () => {
+        const url = `${window.location.origin}/${token}`
+        navigator.clipboard.writeText(url).then(() => {
+            setCopied(true)
+            setTimeout(() => setCopied(false), 2000)
+        })
     }
 
     return (
@@ -24,15 +38,11 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, setSearchQuery }) => {
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-4 gap-4 sm:gap-0">
 
-                        {/* Logo */}
                         <div className="flex justify-between items-center">
                             <div className="text-white logo font-bold text-xl">{APP_NAME}</div>
                         </div>
 
-                        {/* Search & Add */}
                         <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
-
-                            {/* Search Input */}
                             <div className="relative w-full sm:w-64">
                                 <input
                                     type="text"
@@ -52,6 +62,14 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, setSearchQuery }) => {
                             >
                                 <FaPlus />
                                 <span>Add new Board</span>
+                            </button>
+
+                            <button
+                                onClick={handleCopyLink}
+                                className="cursor-pointer rounded-lg bg-white text-indigo-600 hover:bg-indigo-50 px-4 py-2 flex items-center justify-center gap-2 text-sm sm:text-base whitespace-nowrap transition"
+                            >
+                                <FaRegCopy />
+                                <span>{copied ? 'Link copied' : 'Copy link'}</span>
                             </button>
                         </div>
                     </div>

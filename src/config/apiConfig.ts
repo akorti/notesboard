@@ -3,12 +3,10 @@ export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 export async function getUserToken(): Promise<string> {
     const pathParts = window.location.pathname.split('/')
     const urlToken = pathParts[1]?.trim()
-    console.log(urlToken)
     const isValidToken = (token: string) =>
         /^[A-Za-z0-9_-]{6,32}$/.test(token)
 
     if (urlToken && isValidToken(urlToken)) {
-        console.log('Token from URL:', urlToken)
         localStorage.setItem('userToken', urlToken)
         return urlToken
     }

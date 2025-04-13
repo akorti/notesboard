@@ -184,7 +184,7 @@ const App: React.FC = () => {
                     <main className="p-4">
                         {isSearchLoading ? (
                             <Loader/>
-                        ) : selectedBoard !== null ? ( // ✅ Corrigé : Pas de `{}` inutiles
+                        ) : selectedBoard !== null ? (
                             <NotesBoard
                                 notes={filteredNotes}
                                 onEdit={handleEditNote}
