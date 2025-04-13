@@ -167,7 +167,7 @@ const App: React.FC = () => {
                     </div>
 
                     <div className="px-4 py-2 text-gray-300 text-sm">
-                        {filteredNotes.length} note{filteredNotes.length !== 1 && 's'} trouvée{filteredNotes.length !== 1 && 's'}.
+                        {filteredNotes.length} note{filteredNotes.length !== 1 && 's'}.
                     </div>
 
                     {isFormOpen && (
