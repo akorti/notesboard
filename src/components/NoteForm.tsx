@@ -39,7 +39,7 @@ const colorOptions = [
 ]
 
 const NoteForm: React.FC<NoteFormProps> = ({ noteToEdit, onClose, boardId }) => {
-    const { addNote, editNote } = useNotesStore()
+    const { addNote, editNote, fetchNotes } = useNotesStore()
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [category, setCategory] = useState('')
@@ -67,6 +67,7 @@ const NoteForm: React.FC<NoteFormProps> = ({ noteToEdit, onClose, boardId }) => 
         setContent('')
         setCategory('')
         setSelectedColor(colorOptions[0].className)
+        fetchNotes(boardId)
         onClose()
     }
 

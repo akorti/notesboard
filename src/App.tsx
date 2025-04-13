@@ -32,6 +32,7 @@ const App: React.FC = () => {
                 const initial = board.name[0]?.toUpperCase() || 'N'
                 setDynamicFavicon(initial)
             }
+            setSelectedCategoryFilter('')
         }
     }, [selectedBoard, boards])
 
