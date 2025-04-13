@@ -1,0 +1,5 @@
+UPDATE boards SET createdAt = CURRENT_TIMESTAMP WHERE createdAt IS NULL;
+UPDATE boards SET updatedAt = CURRENT_TIMESTAMP WHERE updatedAt IS NULL;
+
+UPDATE notes SET createdAt = CURRENT_TIMESTAMP WHERE createdAt IS NULL;
+UPDATE notes SET updatedAt = CURRENT_TIMESTAMP WHERE updatedAt IS NULL;

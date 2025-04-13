@@ -39,6 +39,28 @@ export async function runMigrations() {
 
         try {
             await db.exec('BEGIN')
+
+            // Ajout spécial pour la migration 003_add_timestamps_to_boards_and_notes.sql
+            if (file === '003_add_timestamps_to_boards_and_notes.sql') {
+                const boardCols = new Set(
+                    (await db.all(`PRAGMA table_info(boards)`)).map(col => col.name)
+                )
+                const noteCols = new Set(
+                    (await db.all(`PRAGMA table_info(notes)`)).map(col => col.name)
+                )
+
+                const alreadyExists =
+                    boardCols.has('createdAt') && boardCols.has('updatedAt') &&
+                    noteCols.has('createdAt') && noteCols.has('updatedAt')
+
+                if (alreadyExists) {
+                    console.log(`⚠️ Skipping ${file} (columns already exist)`)
+                    await db.run(`INSERT INTO migrations (name) VALUES (?)`, file)
+                    await db.exec('COMMIT')
+                    continue
+                }
+            }
+
             await db.exec(sql)
             await db.run(`INSERT INTO migrations (name) VALUES (?)`, file)
             await db.exec('COMMIT')
@@ -49,6 +71,7 @@ export async function runMigrations() {
             process.exit(1)
         }
     }
+
 
     await db.close()
 }
